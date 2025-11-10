@@ -1,0 +1,52 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - main  # Ajusta esto si tu rama principal es 'master' u otra
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: SonarQube Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # SonarQube necesita el historial completo para un análisis preciso
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin' # Coincide con tus Dockerfiles
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build and analyze with Maven
+        env:
+          # Token de GitHub para la decoración de Pull Requests
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Token de SonarCloud que debes agregar a los secrets de tu repo
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        # Ejecuta 'verify' para compilar, probar y generar reportes.
+        # Luego, 'sonar:sonar' analiza los resultados.
+        # Maven maneja automáticamente los módulos (auth-service, reporte, etc.)
+        run: mvn -B verify sonar:sonar
