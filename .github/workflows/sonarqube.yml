@@ -39,8 +39,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Install parent POM
+        working-directory: petmanager-parent
+        run: mvn install
+
       - name: Build and analyze with Maven
-        working-directory: auth-service  # 👈 Aquí defines el submódulo
+        working-directory: auth-service
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
