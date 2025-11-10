@@ -43,7 +43,7 @@ jobs:
         working-directory: auth-service
         run: |
           mvn -B verify sonar:sonar \
-            -Dsonar.projectKey=TU_PROJECT_KEY \
-            -Dsonar.organization=TU_ORGANIZATION \
+            -Dsonar.projectKey=petmanagerback3 \
+            -Dsonar.organization=earendil  \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
