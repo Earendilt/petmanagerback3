@@ -39,10 +39,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Install parent POM
-        working-directory: petmanager-parent
-        run: mvn install
-
       - name: Build and analyze with Maven
         working-directory: auth-service
         env:
