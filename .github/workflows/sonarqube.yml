@@ -49,4 +49,5 @@ jobs:
         # Ejecuta 'verify' para compilar, probar y generar reportes.
         # Luego, 'sonar:sonar' analiza los resultados.
         # Maven maneja automáticamente los módulos (auth-service, reporte, etc.)
-        run: mvn -B verify sonar:sonar
+        run: mvn -B verify sonar:sonar
+
