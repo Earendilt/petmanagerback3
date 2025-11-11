@@ -55,3 +55,60 @@ class UserServiceTest {
         assertEquals("juan@test.com", response.getEmail());
     }
 }
+
+    @Test
+    void createUserShouldThrowWhenUsernameExists() {
+        SystemUserRepository userRepository = mock(SystemUserRepository.class);
+        RoleRepository roleRepository = mock(RoleRepository.class);
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+        when(userRepository.existsByUsername("juan")).thenReturn(true);
+
+        UserService userService = new UserService(userRepository, roleRepository, passwordEncoder);
+        UserRequest req = UserRequest.builder().username("juan").email("x@y.com").password("123").build();
+
+        assertThrows(DuplicateResourceException.class, () -> userService.createUser(req));
+    }
+
+    @Test
+    void createUserShouldThrowWhenEmailExists() {
+        SystemUserRepository userRepository = mock(SystemUserRepository.class);
+        RoleRepository roleRepository = mock(RoleRepository.class);
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+        when(userRepository.existsByUsername("juan")).thenReturn(false);
+        when(userRepository.existsByEmail("x@y.com")).thenReturn(true);
+
+        UserService userService = new UserService(userRepository, roleRepository, passwordEncoder);
+        UserRequest req = UserRequest.builder().username("juan").email("x@y.com").password("123").build();
+
+        assertThrows(DuplicateResourceException.class, () -> userService.createUser(req));
+    }
+
+    @Test
+    void createUserShouldAssignRoleWhenRoleIdProvided() {
+        SystemUserRepository userRepository = mock(SystemUserRepository.class);
+        RoleRepository roleRepository = mock(RoleRepository.class);
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+
+        when(userRepository.existsByUsername(anyString())).thenReturn(false);
+        when(userRepository.existsByEmail(anyString())).thenReturn(false);
+        when(passwordEncoder.encode("123")).thenReturn("enc");
+        Role role = Role.builder().id(7).name("ADMIN").build();
+        when(roleRepository.findById(7)).thenReturn(Optional.of(role));
+
+        when(userRepository.save(any(SystemUser.class))).thenAnswer(inv -> {
+            SystemUser u = inv.getArgument(0);
+            u.setId(1);
+            return u;
+        });
+
+        UserService userService = new UserService(userRepository, roleRepository, passwordEncoder);
+
+        UserRequest req = UserRequest.builder()
+                .username("juan").email("x@y.com").password("123").roleId(7).enabled(true).build();
+
+        UserResponse res = userService.createUser(req);
+
+        assertEquals(1, res.getId());
+        assertEquals("ADMIN", res.getRoleName());
+        assertEquals(7, res.getRoleId());
+    }
