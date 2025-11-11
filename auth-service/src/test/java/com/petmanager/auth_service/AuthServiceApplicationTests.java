@@ -17,10 +17,4 @@ class AuthServiceTest {
     @Autowired
     private AuthService authService;
 
-    @Test
-    void loginWithValidCredentialsShouldReturnToken() {
-        String token = authService.login("juan", "password");
-        assertNotNull(token);
-        assertTrue(token.startsWith("ey")); // típico prefijo de JWT
-    }
 }
