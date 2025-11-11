@@ -40,7 +40,7 @@ class UserServiceTest {
                 .enabled(true)
                 .build();
 
-        when(userRepository.save(Mockito.any(SystemUser.class))).thenReturn(fakeUser);
+        when(userRepository.save(any(SystemUser.class))).thenReturn(fakeUser);
 
         // Servicio real con mocks
         UserService userService = new UserService(userRepository, roleRepository, passwordEncoder);
