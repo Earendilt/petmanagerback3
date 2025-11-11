@@ -11,10 +11,3 @@ class AuthServiceApplicationTests {
     }
 
 }
-@SpringBootTest
-class AuthServiceTest {
-
-    @Autowired
-    private AuthService authService;
-
-}
