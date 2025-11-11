@@ -1,3 +1,4 @@
+package com.petmanager.auth_service;
 import com.petmanager.auth_service.entity.SystemUser;
 import com.petmanager.auth_service.repository.RoleRepository;
 import com.petmanager.auth_service.repository.SystemUserRepository;
