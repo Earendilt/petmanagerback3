@@ -1,12 +1,14 @@
-package com.petmanager.auth_service.config;
+package com.petmanager.auth_service.service;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.AuthenticationException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -14,7 +16,7 @@ import static org.mockito.Mockito.*;
 class JwtAuthenticationEntryPointTest {
 
     @Test
-    void commenceShouldSetUnauthorizedResponse() throws Exception {
+    void commenceShouldSetUnauthorizedResponse() throws IOException {
         JwtAuthenticationEntryPoint entryPoint = new JwtAuthenticationEntryPoint();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -23,10 +25,23 @@ class JwtAuthenticationEntryPointTest {
         when(request.getRequestURI()).thenReturn("/api/test");
         when(authException.getMessage()).thenReturn("Invalid token");
 
-        // Capturar el JSON con PrintWriter
+        // Capturar el JSON con un ServletOutputStream válido
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintWriter writer = new PrintWriter(baos, true);
-        when(response.getWriter()).thenReturn(writer);
+        ServletOutputStream sos = new ServletOutputStream() {
+            @Override
+            public void write(int b) {
+                baos.write(b);
+            }
+            @Override
+            public boolean isReady() {
+                return true;
+            }
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
+                // no-op
+            }
+        };
+        when(response.getOutputStream()).thenReturn(sos);
 
         // Act
         entryPoint.commence(request, response, authException);
