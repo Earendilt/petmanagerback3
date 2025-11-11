@@ -1,4 +1,4 @@
-package com.petmanager.auth_service.service;
+package com.petmanager.auth_service.config;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;
