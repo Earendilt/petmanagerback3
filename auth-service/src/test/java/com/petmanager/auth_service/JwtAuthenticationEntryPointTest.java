@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 class JwtAuthenticationEntryPointTest {
 
     @Test
-    void commenceShouldSetUnauthorizedResponse() throws IOException {
+    void commenceShouldSetUnauthorizedResponse() throws Exception {
         JwtAuthenticationEntryPoint entryPoint = new JwtAuthenticationEntryPoint();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -56,10 +56,5 @@ class JwtAuthenticationEntryPointTest {
         assertTrue(json.contains("\"message\":\"Invalid token\""));
         assertTrue(json.contains("\"path\":\"/api/test\""));
     }
-
-    @Test
-    void commenceShouldSetUnauthorizedResponse() throws Exception {
-        // tu lógica de test
-    }
-
+    
 }
