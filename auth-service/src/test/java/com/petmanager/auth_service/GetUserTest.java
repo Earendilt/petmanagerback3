@@ -15,7 +15,7 @@ import java.util.List;   // <--- este import faltaba
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserServiceTest {
+class GetUserTest {
 
     @Test
     void getUserByIdShouldReturnUserResponse() {
