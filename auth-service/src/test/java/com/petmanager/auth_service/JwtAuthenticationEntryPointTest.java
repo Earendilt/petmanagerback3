@@ -1,14 +1,12 @@
 package com.petmanager.auth_service.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.AuthenticationException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.PrintWriter;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -16,8 +14,7 @@ import static org.mockito.Mockito.*;
 class JwtAuthenticationEntryPointTest {
 
     @Test
-    void commenceShouldSetUnauthorizedResponse() throws IOException {
-        // Arrange
+    void commenceShouldSetUnauthorizedResponse() throws Exception {
         JwtAuthenticationEntryPoint entryPoint = new JwtAuthenticationEntryPoint();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -26,15 +23,10 @@ class JwtAuthenticationEntryPointTest {
         when(request.getRequestURI()).thenReturn("/api/test");
         when(authException.getMessage()).thenReturn("Invalid token");
 
-        // Capturar el output JSON
+        // Capturar el JSON con PrintWriter
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ServletOutputStream sos = new ServletOutputStream() {
-            @Override
-            public void write(int b) {
-                baos.write(b);
-            }
-        };
-        when(response.getOutputStream()).thenReturn(sos);
+        PrintWriter writer = new PrintWriter(baos, true);
+        when(response.getWriter()).thenReturn(writer);
 
         // Act
         entryPoint.commence(request, response, authException);
@@ -43,7 +35,6 @@ class JwtAuthenticationEntryPointTest {
         verify(response).setContentType("application/json");
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        // Verificar que el JSON contiene los campos esperados
         String json = baos.toString();
         assertTrue(json.contains("\"status\":401"));
         assertTrue(json.contains("\"error\":\"Unauthorized\""));
