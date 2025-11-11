@@ -56,4 +56,10 @@ class JwtAuthenticationEntryPointTest {
         assertTrue(json.contains("\"message\":\"Invalid token\""));
         assertTrue(json.contains("\"path\":\"/api/test\""));
     }
+
+    @Test
+    void commenceShouldSetUnauthorizedResponse() throws Exception {
+        // tu lógica de test
+    }
+
 }
