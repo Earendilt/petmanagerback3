@@ -1,4 +1,3 @@
-package com.petmanager.auth_service;
 package com.petmanager.auth_service.service;
 
 import com.petmanager.auth_service.entity.Role;
