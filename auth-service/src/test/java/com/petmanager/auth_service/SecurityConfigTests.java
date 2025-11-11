@@ -1,7 +1,7 @@
 package com.petmanager.auth_service.config;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
