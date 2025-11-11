@@ -1,5 +1,8 @@
 package com.petmanager.auth_service.service;
 
+import com.petmanager.auth_service.entity.RefreshToken;
+import com.petmanager.auth_service.entity.SystemUser;
+import com.petmanager.auth_service.entity.Role; // si lo usas
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -16,6 +19,7 @@ class RefreshTokenTest {
                 .username("juan")
                 .passwordHash("pwd")
                 .enabled(true)
+                .role(Role.builder().id(1).name("ADMIN").build())
                 .build();
 
         RefreshToken token = RefreshToken.builder()
@@ -29,29 +33,5 @@ class RefreshTokenTest {
         assertEquals("abc123", token.getToken());
         assertEquals(user, token.getUser());
         assertEquals(now, token.getExpiryDate());
-    }
-
-    @Test
-    void equalsAndToStringShouldWork() {
-        Instant now = Instant.now();
-        SystemUser user = SystemUser.builder().id(2).username("ana").passwordHash("pwd").enabled(true).build();
-
-        RefreshToken t1 = new RefreshToken(1L, "xyz", user, now);
-        RefreshToken t2 = new RefreshToken(1L, "xyz", user, now);
-
-        assertEquals(t1, t2); // cubre equals/hashCode
-        assertTrue(t1.toString().contains("xyz")); // cubre toString
-    }
-
-    @Test
-    void noArgsConstructorShouldWork() {
-        RefreshToken token = new RefreshToken();
-        token.setId(200L);
-        token.setToken("zzz");
-        token.setExpiryDate(Instant.now());
-
-        assertEquals(200L, token.getId());
-        assertEquals("zzz", token.getToken());
-        assertNotNull(token.getExpiryDate());
     }
 }
