@@ -54,7 +54,7 @@ class UserServiceTest {
         assertEquals("juan", response.getUsername());
         assertEquals("juan@test.com", response.getEmail());
     }
-}
+
 
     @Test
     void createUserShouldThrowWhenUsernameExists() {
@@ -112,3 +112,5 @@ class UserServiceTest {
         assertEquals("ADMIN", res.getRoleName());
         assertEquals(7, res.getRoleId());
     }
+
+}
