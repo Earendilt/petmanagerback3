@@ -1,17 +1,24 @@
 package com.petmanager.auth_service;
+package com.petmanager.auth_service.service;
+
+import com.petmanager.auth_service.entity.Role;
 import com.petmanager.auth_service.entity.SystemUser;
+import com.petmanager.auth_service.exception.DuplicateResourceException;
+import com.petmanager.auth_service.exception.ResourceNotFoundException;
 import com.petmanager.auth_service.repository.RoleRepository;
 import com.petmanager.auth_service.repository.SystemUserRepository;
 import com.petmanager.auth_service.service.UserService;
 import com.petmanager.auth_service.web.dto.UserRequest;
 import com.petmanager.auth_service.web.dto.UserResponse;
+import com.petmanager.auth_service.web.dto.UserUpdateRequest;
+
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;   // <--- este faltaba
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 class UserServiceTest {
 
     @Test
