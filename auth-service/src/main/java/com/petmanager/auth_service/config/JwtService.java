@@ -164,4 +164,12 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
+    public void setJwtExpiration(long jwtExpiration) {
+        this.jwtExpiration = jwtExpiration;
+    }
+
+    public void setRefreshExpiration(long refreshExpiration) {
+        this.refreshExpiration = refreshExpiration;
+    }
 }

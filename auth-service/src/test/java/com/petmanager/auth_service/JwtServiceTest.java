@@ -16,9 +16,9 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() throws Exception {
         jwtService = new JwtService();
+        jwtService.setJwtExpiration(60000); // 1 minuto
+        jwtService.setRefreshExpiration(60000);
         jwtService.init();
-        jwtService.jwtExpiration = 60000; // 1 minuto
-        jwtService.refreshExpiration = 60000;
     }
 
     @Test
