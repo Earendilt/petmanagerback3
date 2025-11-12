@@ -1,4 +1,4 @@
-package com.petmanager.auth_service.config;
+package com.petmanager.auth_service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,24 +16,24 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() throws Exception {
         jwtService = new JwtService();
-        jwtService.setJwtExpiration(60000); // 1 minuto
+        jwtService.setJwtExpiration(60000);
         jwtService.setRefreshExpiration(60000);
         jwtService.init();
     }
 
     @Test
     void generateAndValidateToken() {
-        // Arrange
+
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 "juan", "password", Collections.emptyList()
         );
 
-        // Act
+
         String token = jwtService.generateToken(userDetails);
         String extractedUsername = jwtService.extractUsername(token);
         boolean isValid = jwtService.isTokenValid(token, userDetails);
 
-        // Assert
+
         assertNotNull(token);
         assertEquals("juan", extractedUsername);
         assertTrue(isValid);
