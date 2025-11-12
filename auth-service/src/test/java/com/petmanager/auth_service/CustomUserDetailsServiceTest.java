@@ -24,7 +24,7 @@ class CustomUserDetailsServiceTest {
         user.setUsername("juan");
         user.setPasswordHash("hashed");
         user.setEnabled(true);
-        user.setRole(new Role("admin"));
+        user.setRole(new Role(1, "admin", "Administrador del sistema"));
 
         when(repository.findByUsernameOrEmailWithRole("juan", "juan"))
                 .thenReturn(Optional.of(user));
