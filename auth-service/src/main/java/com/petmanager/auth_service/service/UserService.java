@@ -26,6 +26,7 @@ public class UserService {
     private final SystemUserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final String USER_NOT_FOUND_BY_ID = "User not found with id: ";
 
     public UserResponse createUser(UserRequest request) {
         // Validate username and email uniqueness
@@ -61,14 +62,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponse getUserById(Integer id) {
         SystemUser user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + id));
         return mapToResponse(user);
     }
 
     @Transactional(readOnly = true)
     public UserResponse getUserByUsername(String username) {
         SystemUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + username));
         return mapToResponse(user);
     }
 
@@ -81,7 +82,7 @@ public class UserService {
 
     public UserResponse updateUser(Integer id, UserUpdateRequest request) {
         SystemUser user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + id));
 
         // Update username if provided
         if (request.getUsername() != null && !request.getUsername().equals(user.getUsername())) {
@@ -122,14 +123,14 @@ public class UserService {
 
     public void deleteUser(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
+            throw new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
         userRepository.deleteById(id);
     }
 
     public UserResponse enableUser(Integer id) {
         SystemUser user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + id));
         user.setEnabled(true);
         SystemUser updatedUser = userRepository.save(user);
         return mapToResponse(updatedUser);
@@ -137,7 +138,7 @@ public class UserService {
 
     public UserResponse disableUser(Integer id) {
         SystemUser user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + id));
         user.setEnabled(false);
         SystemUser updatedUser = userRepository.save(user);
         return mapToResponse(updatedUser);
