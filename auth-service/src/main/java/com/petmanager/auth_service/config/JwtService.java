@@ -26,7 +26,7 @@ public class JwtService {
     @Value("${jwt.public-key:}")
     private String publicKeyString;
 
-    @Value("${jwt.expiration:86400000}")
+    @Value("${jwt.expiration:60000}")
     private long jwtExpiration;
 
     @Value("${jwt.refresh-token.expiration:604800000}")
