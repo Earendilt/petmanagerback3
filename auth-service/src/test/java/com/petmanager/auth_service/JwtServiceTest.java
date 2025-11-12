@@ -12,10 +12,13 @@ class JwtServiceTest {
 
     private JwtService jwtService;
 
+
     @BeforeEach
     void setUp() throws Exception {
         jwtService = new JwtService();
-        jwtService.init(); // genera claves RSA si no hay configuración
+        jwtService.init();
+        jwtService.jwtExpiration = 60000; // 1 minuto
+        jwtService.refreshExpiration = 60000;
     }
 
     @Test
@@ -49,14 +52,5 @@ class JwtServiceTest {
         String token = jwtService.generateToken(userDetails);
         assertFalse(jwtService.isTokenValid(token, otherUser));
     }
-
-    @BeforeEach
-    void setUp() throws Exception {
-        jwtService = new JwtService();
-        jwtService.init();
-        jwtService.jwtExpiration = 60000; // 1 minuto
-        jwtService.refreshExpiration = 60000;
-    }
-
 
 }
