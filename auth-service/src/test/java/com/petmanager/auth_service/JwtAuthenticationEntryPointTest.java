@@ -56,5 +56,5 @@ class JwtAuthenticationEntryPointTest {
         assertTrue(json.contains("\"message\":\"Invalid token\""));
         assertTrue(json.contains("\"path\":\"/api/test\""));
     }
-    
+
 }
