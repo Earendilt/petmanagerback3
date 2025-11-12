@@ -1,4 +1,4 @@
-package com.petmanager.auth_service;
+package com.petmanager.auth_service.config;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
